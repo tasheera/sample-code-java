@@ -7,7 +7,15 @@ import net.authorize.api.contract.v1.MerchantAuthenticationType;
 import net.authorize.api.controller.base.ApiOperationBase;
 import net.authorize.api.controller.DeleteCustomerProfileController;
 
+import java.util.logging.Logger;
+
 public class DeleteCustomerProfile {
+
+    private static final Logger LOGGER = Logger.getLogger(DeleteCustomerProfile.class.getName());
+
+    private DeleteCustomerProfile(){
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+    }
 	
 	public static ANetApiResponse run(String apiLoginId, String transactionKey, String customerProfileId) {
 
@@ -24,19 +32,19 @@ public class DeleteCustomerProfile {
         DeleteCustomerProfileController controller = new DeleteCustomerProfileController(apiRequest);
         controller.execute();
        
-		DeleteCustomerProfileResponse response = new DeleteCustomerProfileResponse();
+		DeleteCustomerProfileResponse response;
 		response = controller.getApiResponse();
 
 		if (response!=null) {
 
              if (response.getMessages().getResultCode() == MessageTypeEnum.OK) {
 
- 				System.out.println(response.getMessages().getMessage().get(0).getCode());
-                System.out.println(response.getMessages().getMessage().get(0).getText());
+ 				LOGGER.info(response.getMessages().getMessage().get(0).getCode());
+                LOGGER.info(response.getMessages().getMessage().get(0).getText());
             }
             else
             {
-                System.out.println("Failed to delete customer profile:  " + response.getMessages().getResultCode());
+                LOGGER.info("Failed to delete customer profile:  " + response.getMessages().getResultCode());
             }
         }
 		return response;

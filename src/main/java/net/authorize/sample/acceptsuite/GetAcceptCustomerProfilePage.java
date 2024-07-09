@@ -1,4 +1,4 @@
-package net.authorize.sample.AcceptSuite;
+package net.authorize.sample.acceptsuite;
 
 import net.authorize.Environment;
 import net.authorize.api.contract.v1.*;
@@ -6,9 +6,16 @@ import net.authorize.api.contract.v1.*;
 import net.authorize.api.contract.v1.MerchantAuthenticationType;
 import net.authorize.api.controller.base.ApiOperationBase;
 import net.authorize.api.controller.GetHostedProfilePageController;
-import net.authorize.api.controller.base.ApiOperationBase;
+
+import java.util.logging.Logger;
 
 public class GetAcceptCustomerProfilePage {
+
+    private static final Logger LOGGER = Logger.getLogger(GetAcceptCustomerProfilePage.class.getName());
+
+    private GetAcceptCustomerProfilePage(){
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+    }
 	
 	public static ANetApiResponse run(String apiLoginId, String transactionKey, String customerProfileId) {
 
@@ -33,21 +40,21 @@ public class GetAcceptCustomerProfilePage {
         GetHostedProfilePageController controller = new GetHostedProfilePageController(apiRequest);
         controller.execute();
        
-		GetHostedProfilePageResponse response = new GetHostedProfilePageResponse();
+		GetHostedProfilePageResponse response;
 		response = controller.getApiResponse();
 
 		if (response!=null) {
 
              if (response.getMessages().getResultCode() == MessageTypeEnum.OK) {
 
- 				System.out.println(response.getMessages().getMessage().get(0).getCode());
-                System.out.println(response.getMessages().getMessage().get(0).getText());
+ 				LOGGER.info(response.getMessages().getMessage().get(0).getCode());
+                LOGGER.info(response.getMessages().getMessage().get(0).getText());
 
-                System.out.println(response.getToken());
+                LOGGER.info(response.getToken());
             }
             else
             {
-                System.out.println("Failed to get hosted profile page:  " + response.getMessages().getResultCode());
+                LOGGER.info("Failed to get hosted profile page:  " + response.getMessages().getResultCode());
             }
         }
 		return response;

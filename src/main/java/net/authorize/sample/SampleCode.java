@@ -12,8 +12,8 @@ import net.authorize.sample.TransactionReporting.*;
 import net.authorize.sample.customerprofiles.*;
 import net.authorize.sample.MobileInAppTransactions.*;
 import net.authorize.sample.FraudManagement.*;
-import net.authorize.sample.AcceptSuite.GetAcceptCustomerProfilePage;
-import net.authorize.sample.AcceptSuite.GetAnAcceptPaymentPage;
+import net.authorize.sample.acceptsuite.GetAcceptCustomerProfilePage;
+import net.authorize.sample.acceptsuite.GetAnAcceptPaymentPage;
 
 /**
  * Created by anetdeveloper on 8/5/15.
