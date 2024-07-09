@@ -1,4 +1,4 @@
-package net.authorize.sample.CustomerProfiles;
+package net.authorize.sample.customerprofiles;
 
 import net.authorize.Environment;
 import net.authorize.api.contract.v1.*;
@@ -7,9 +7,16 @@ import net.authorize.api.contract.v1.MerchantAuthenticationType;
 import net.authorize.api.controller.CreateCustomerPaymentProfileController;
 import net.authorize.api.controller.base.ApiOperationBase;
 
+import java.util.logging.Logger;
+
 //author @krgupta
 public class CreateCustomerPaymentProfile {
-	
+	private static final Logger LOGGER = Logger.getLogger(CreateCustomerPaymentProfile.class.getName());
+
+	private CreateCustomerPaymentProfile(){
+		throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+	}
+
 	public static ANetApiResponse run(String apiLoginId, String transactionKey, String customerProfileId) {
 
         ApiOperationBase.setEnvironment(Environment.SANDBOX);
@@ -19,7 +26,6 @@ public class CreateCustomerPaymentProfile {
         merchantAuthenticationType.setTransactionKey(transactionKey);
         ApiOperationBase.setMerchantAuthentication(merchantAuthenticationType);
 		
-	//private String getPaymentDetails(MerchantAuthenticationType merchantAuthentication, String customerprofileId, ValidationModeEnum validationMode) {
 		CreateCustomerPaymentProfileRequest apiRequest = new CreateCustomerPaymentProfileRequest();
 		apiRequest.setMerchantAuthentication(merchantAuthenticationType);
 		apiRequest.setCustomerProfileId(customerProfileId);	
@@ -53,20 +59,20 @@ public class CreateCustomerPaymentProfile {
 		CreateCustomerPaymentProfileController controller = new CreateCustomerPaymentProfileController(apiRequest);
 		controller.execute();
        
-		CreateCustomerPaymentProfileResponse response = new CreateCustomerPaymentProfileResponse();
+		CreateCustomerPaymentProfileResponse response;
 		response = controller.getApiResponse();
 		if (response!=null) {
              if (response.getMessages().getResultCode() == MessageTypeEnum.OK) {
             	
-                System.out.println(response.getCustomerPaymentProfileId());
- 				System.out.println(response.getMessages().getMessage().get(0).getCode());
-                System.out.println(response.getMessages().getMessage().get(0).getText());
+                LOGGER.info(response.getCustomerPaymentProfileId());
+				LOGGER.info(response.getMessages().getMessage().get(0).getCode());
+				LOGGER.info(response.getMessages().getMessage().get(0).getText());
                 if (response.getValidationDirectResponse() != null)
-                	System.out.println(response.getValidationDirectResponse());
+                	LOGGER.info(response.getValidationDirectResponse());
             }
             else
             {
-                System.out.println("Failed to create customer payment profile:  " + response.getMessages().getResultCode());
+                LOGGER.info("Failed to create customer payment profile:  " + response.getMessages().getResultCode());
             }
         }
 

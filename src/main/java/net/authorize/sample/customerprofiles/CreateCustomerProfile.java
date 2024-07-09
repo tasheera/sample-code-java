@@ -1,12 +1,20 @@
-package net.authorize.sample.CustomerProfiles;
+package net.authorize.sample.customerprofiles;
 
 import net.authorize.Environment;
 import net.authorize.api.contract.v1.*;
-import java.math.BigDecimal;
 import net.authorize.api.controller.CreateCustomerProfileController;
 import net.authorize.api.controller.base.ApiOperationBase;
 
+import java.util.logging.Logger;
+
 public class CreateCustomerProfile {
+
+    private static final Logger LOGGER = Logger.getLogger(CreateCustomerProfile.class.getName());
+
+    private CreateCustomerProfile(){
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+    }
+
     public static ANetApiResponse run(String apiLoginId, String transactionKey, String eMail) {
 
         // Set the request to operate in either the sandbox or production environment
@@ -47,34 +55,34 @@ public class CreateCustomerProfile {
         controller.execute();
 
         // Get the response
-        CreateCustomerProfileResponse response = new CreateCustomerProfileResponse();
+        CreateCustomerProfileResponse response;
         response = controller.getApiResponse();
         
         // Parse the response to determine results
         if (response!=null) {
             // If API Response is OK, go ahead and check the transaction response
             if (response.getMessages().getResultCode() == MessageTypeEnum.OK) {
-                System.out.println(response.getCustomerProfileId());
+                LOGGER.info(response.getCustomerProfileId());
                 if (!response.getCustomerPaymentProfileIdList().getNumericString().isEmpty()) {
-                    System.out.println(response.getCustomerPaymentProfileIdList().getNumericString().get(0));
+                    LOGGER.info(response.getCustomerPaymentProfileIdList().getNumericString().get(0));
                 }
                 if (!response.getCustomerShippingAddressIdList().getNumericString().isEmpty()) {
-                    System.out.println(response.getCustomerShippingAddressIdList().getNumericString().get(0));
+                    LOGGER.info(response.getCustomerShippingAddressIdList().getNumericString().get(0));
                 }
                 if (!response.getValidationDirectResponseList().getString().isEmpty()) {
-                    System.out.println(response.getValidationDirectResponseList().getString().get(0));
+                    LOGGER.info(response.getValidationDirectResponseList().getString().get(0));
                 }
             }
             else
             {
-                System.out.println("Failed to create customer profile:  " + response.getMessages().getResultCode());
+                LOGGER.info("Failed to create customer profile:  " + response.getMessages().getResultCode());
             }
         } else {
             // Display the error code and message when response is null 
             ANetApiResponse errorResponse = controller.getErrorResponse();
-            System.out.println("Failed to get response");
+            LOGGER.info("Failed to get response");
             if (!errorResponse.getMessages().getMessage().isEmpty()) {
-                System.out.println("Error: "+errorResponse.getMessages().getMessage().get(0).getCode()+" \n"+ errorResponse.getMessages().getMessage().get(0).getText());
+                LOGGER.info("Error: "+errorResponse.getMessages().getMessage().get(0).getCode()+" \n"+ errorResponse.getMessages().getMessage().get(0).getText());
             }
         }
         return response;

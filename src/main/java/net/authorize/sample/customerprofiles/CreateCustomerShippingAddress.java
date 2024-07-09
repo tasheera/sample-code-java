@@ -1,12 +1,19 @@
-package net.authorize.sample.CustomerProfiles;
+package net.authorize.sample.customerprofiles;
 
 import net.authorize.Environment;
 import net.authorize.api.contract.v1.*;
-import java.math.BigDecimal;
 import net.authorize.api.controller.CreateCustomerShippingAddressController;
 import net.authorize.api.controller.base.ApiOperationBase;
+import java.util.logging.Logger;
 
 public class CreateCustomerShippingAddress {
+
+    private static final Logger LOGGER = Logger.getLogger(CreateCustomerShippingAddress.class.getName());
+
+
+    private CreateCustomerShippingAddress(){
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+    }
 
 	public static ANetApiResponse run(String apiLoginId, String transactionKey, String customerProfileId) {
 
@@ -39,13 +46,13 @@ public class CreateCustomerShippingAddress {
 
              if (response.getMessages().getResultCode() == MessageTypeEnum.OK) {
 
-                System.out.println(response.getCustomerAddressId());
-                System.out.println(response.getMessages().getMessage().get(0).getCode());
-                System.out.println(response.getMessages().getMessage().get(0).getText());
+                LOGGER.info(response.getCustomerAddressId());
+                LOGGER.info(response.getMessages().getMessage().get(0).getCode());
+                LOGGER.info(response.getMessages().getMessage().get(0).getText());
             }
             else
             {
-                System.out.println("Failed to create customer shipping address:  " + response.getMessages().getResultCode());
+                LOGGER.info("Failed to create customer shipping address:  " + response.getMessages().getResultCode());
             }
         }
 		return response;

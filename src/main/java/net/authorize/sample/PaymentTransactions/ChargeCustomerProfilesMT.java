@@ -1,19 +1,14 @@
 package net.authorize.sample.PaymentTransactions;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.security.SecureRandom;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import net.authorize.Environment;
 import net.authorize.api.contract.v1.*;
-import net.authorize.api.controller.CreateTransactionController;
-import net.authorize.api.controller.base.ApiOperationBase;
-import net.authorize.sample.CustomerProfiles.CreateCustomerPaymentProfile;
-import net.authorize.sample.CustomerProfiles.CreateCustomerProfile;
+import net.authorize.sample.customerprofiles.CreateCustomerPaymentProfile;
+import net.authorize.sample.customerprofiles.CreateCustomerProfile;
 
 public class ChargeCustomerProfilesMT {
 

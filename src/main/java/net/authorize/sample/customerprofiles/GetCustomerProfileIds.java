@@ -1,17 +1,15 @@
-package net.authorize.sample.CustomerProfiles;
+package net.authorize.sample.customerprofiles;
 
 import net.authorize.Environment;
 import net.authorize.api.contract.v1.*;
 
 import net.authorize.api.contract.v1.MerchantAuthenticationType;
 import net.authorize.api.controller.base.ApiOperationBase;
-import net.authorize.api.controller.DeleteCustomerShippingAddressController;
-import net.authorize.api.controller.base.ApiOperationBase;
+import net.authorize.api.controller.GetCustomerProfileIdsController;
 
-public class DeleteCustomerShippingAddress {
+public class GetCustomerProfileIds {
 	
-	public static ANetApiResponse run(String apiLoginId, String transactionKey, String customerProfileId,
-			String customerAddressId) {
+	public static ANetApiResponse run(String apiLoginId, String transactionKey) {
 
         ApiOperationBase.setEnvironment(Environment.SANDBOX);
 
@@ -20,14 +18,12 @@ public class DeleteCustomerShippingAddress {
         merchantAuthenticationType.setTransactionKey(transactionKey);
         ApiOperationBase.setMerchantAuthentication(merchantAuthenticationType);
 
-        DeleteCustomerShippingAddressRequest apiRequest = new DeleteCustomerShippingAddressRequest();
-        apiRequest.setCustomerProfileId(customerProfileId);
-        apiRequest.setCustomerAddressId(customerAddressId);
+        GetCustomerProfileIdsRequest apiRequest = new GetCustomerProfileIdsRequest();
 
-        DeleteCustomerShippingAddressController controller = new DeleteCustomerShippingAddressController(apiRequest);
+        GetCustomerProfileIdsController controller = new GetCustomerProfileIdsController(apiRequest);
         controller.execute();
        
-		DeleteCustomerShippingAddressResponse response = new DeleteCustomerShippingAddressResponse();
+		GetCustomerProfileIdsResponse response = new GetCustomerProfileIdsResponse();
 		response = controller.getApiResponse();
 
 		if (response!=null) {
@@ -36,10 +32,15 @@ public class DeleteCustomerShippingAddress {
 
  				System.out.println(response.getMessages().getMessage().get(0).getCode());
                 System.out.println(response.getMessages().getMessage().get(0).getText());
+
+                for (int i =0; i < response.getIds().getNumericString().size(); i++) {
+
+                	System.out.println(response.getIds().getNumericString().get(i));
+                }
             }
             else
             {
-                System.out.println("Failed to delete customer shipping address:  " + response.getMessages().getResultCode());
+                System.out.println("Failed to get customer payment profile:  " + response.getMessages().getResultCode());
             }
         }
 		return response;

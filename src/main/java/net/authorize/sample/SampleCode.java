@@ -1,17 +1,15 @@
 package net.authorize.sample;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
 import net.authorize.sample.VisaCheckout.*;
-import net.authorize.util.Constants;
 import net.authorize.sample.PaymentTransactions.*;
 import net.authorize.sample.PayPalExpressCheckout.*;
 import net.authorize.sample.PayPalExpressCheckout.Void;
 import net.authorize.sample.RecurringBilling.*;
 import net.authorize.sample.TransactionReporting.*;
-import net.authorize.sample.CustomerProfiles.*;
+import net.authorize.sample.customerprofiles.*;
 import net.authorize.sample.MobileInAppTransactions.*;
 import net.authorize.sample.FraudManagement.*;
 import net.authorize.sample.AcceptSuite.GetAcceptCustomerProfilePage;

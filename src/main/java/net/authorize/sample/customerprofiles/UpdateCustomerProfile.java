@@ -1,14 +1,11 @@
-package net.authorize.sample.CustomerProfiles;
+package net.authorize.sample.customerprofiles;
 
 import net.authorize.Environment;
 import net.authorize.api.contract.v1.*;
-
-import net.authorize.api.contract.v1.MerchantAuthenticationType;
 import net.authorize.api.controller.base.ApiOperationBase;
-import net.authorize.api.controller.DeleteCustomerProfileController;
-import net.authorize.api.controller.base.ApiOperationBase;
+import net.authorize.api.controller.UpdateCustomerProfileController;
 
-public class DeleteCustomerProfile {
+public class UpdateCustomerProfile {
 	
 	public static ANetApiResponse run(String apiLoginId, String transactionKey, String customerProfileId) {
 
@@ -19,13 +16,20 @@ public class DeleteCustomerProfile {
         merchantAuthenticationType.setTransactionKey(transactionKey);
         ApiOperationBase.setMerchantAuthentication(merchantAuthenticationType);
 
-        DeleteCustomerProfileRequest apiRequest = new DeleteCustomerProfileRequest();
-        apiRequest.setCustomerProfileId(customerProfileId);
+		CustomerProfileInfoExType customer =  new CustomerProfileInfoExType();
+		customer.setMerchantCustomerId("custId123");
+		customer.setDescription("some description");
+		customer.setEmail("newaddress@example.com");
+		customer.setCustomerProfileId(customerProfileId);
+		customer.setProfileType(CustomerProfileTypeEnum.REGULAR);
 
-        DeleteCustomerProfileController controller = new DeleteCustomerProfileController(apiRequest);
+		UpdateCustomerProfileRequest apiRequest = new UpdateCustomerProfileRequest();
+		apiRequest.setProfile(customer);
+	
+        UpdateCustomerProfileController controller = new UpdateCustomerProfileController(apiRequest);
         controller.execute();
        
-		DeleteCustomerProfileResponse response = new DeleteCustomerProfileResponse();
+		UpdateCustomerProfileResponse response = new UpdateCustomerProfileResponse();
 		response = controller.getApiResponse();
 
 		if (response!=null) {
@@ -37,9 +41,9 @@ public class DeleteCustomerProfile {
             }
             else
             {
-                System.out.println("Failed to delete customer profile:  " + response.getMessages().getResultCode());
+                System.out.println("Failed to update customer profile:  " + response.getMessages().getResultCode());
             }
         }
 		return response;
-    }
+	}	
 }

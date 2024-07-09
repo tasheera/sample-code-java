@@ -1,4 +1,4 @@
-package net.authorize.sample.CustomerProfiles;
+package net.authorize.sample.customerprofiles;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -18,8 +18,16 @@ import net.authorize.api.contract.v1.TransactionRequestType;
 import net.authorize.api.controller.CreateCustomerProfileFromTransactionController;
 import net.authorize.api.controller.CreateTransactionController;
 import net.authorize.api.controller.base.ApiOperationBase;
+import java.util.logging.Logger;
+
 
 public class CreateCustomerProfileFromTransaction {
+
+	private static final Logger LOGGER = Logger.getLogger(CreateCustomerProfileFromTransaction.class.getName());
+
+	private CreateCustomerProfileFromTransaction(){
+		throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+	}
 
 	public static ANetApiResponse run(String apiLoginId, String transactionKey, Double amount, String email) {
 
@@ -40,7 +48,7 @@ public class CreateCustomerProfileFromTransaction {
 		TransactionRequestType requestInternal = new TransactionRequestType();
 		requestInternal.setTransactionType("authOnlyTransaction");
 		requestInternal.setPayment(paymentType);
-		requestInternal.setAmount(new BigDecimal(amount).setScale(2, RoundingMode.CEILING));
+		requestInternal.setAmount(BigDecimal.valueOf(amount).setScale(2, RoundingMode.CEILING));
 		
 		CustomerDataType customer = new CustomerDataType();
 		customer.setEmail(email);
@@ -59,21 +67,20 @@ public class CreateCustomerProfileFromTransaction {
 		customerProfile.setEmail("johnsnow@castleblack.com");
 		customerProfile.setDescription("This is a sample customer profile");		
 		
-		CreateCustomerProfileFromTransactionRequest transaction_request = new CreateCustomerProfileFromTransactionRequest();
-		transaction_request.setTransId(response.getTransactionResponse().getTransId());
+		CreateCustomerProfileFromTransactionRequest transactionRequest = new CreateCustomerProfileFromTransactionRequest();
+		transactionRequest.setTransId(response.getTransactionResponse().getTransId());
 		// You can either specify the customer information in form of customerProfileBaseType object
-		transaction_request.setCustomer(customerProfile);
+		transactionRequest.setCustomer(customerProfile);
 		//  OR   
 		// You can just provide the customer Profile ID
-		// transaction_request.setCustomerProfileId("1232132");
-		
-		CreateCustomerProfileFromTransactionController createProfileController = new CreateCustomerProfileFromTransactionController(transaction_request);
-		createProfileController.execute();
-		CreateCustomerProfileResponse customer_response = createProfileController.getApiResponse();
 
-		if (customer_response != null) {
-			System.out.println(transaction_request.getTransId());
+		CreateCustomerProfileFromTransactionController createProfileController = new CreateCustomerProfileFromTransactionController(transactionRequest);
+		createProfileController.execute();
+		CreateCustomerProfileResponse customerResponse = createProfileController.getApiResponse();
+
+		if (customerResponse != null) {
+			LOGGER.info(transactionRequest.getTransId());
 		}
-		return customer_response;
+		return customerResponse;
 	}
 }

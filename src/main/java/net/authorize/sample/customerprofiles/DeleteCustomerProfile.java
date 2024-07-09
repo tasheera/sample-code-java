@@ -1,17 +1,15 @@
-package net.authorize.sample.CustomerProfiles;
+package net.authorize.sample.customerprofiles;
 
 import net.authorize.Environment;
 import net.authorize.api.contract.v1.*;
 
 import net.authorize.api.contract.v1.MerchantAuthenticationType;
 import net.authorize.api.controller.base.ApiOperationBase;
-import net.authorize.api.controller.DeleteCustomerPaymentProfileController;
-import net.authorize.api.controller.base.ApiOperationBase;
+import net.authorize.api.controller.DeleteCustomerProfileController;
 
-public class DeleteCustomerPaymentProfile {
+public class DeleteCustomerProfile {
 	
-	public static ANetApiResponse run(String apiLoginId, String transactionKey, String customerProfileId,
-			String customerPaymentProfileId) {
+	public static ANetApiResponse run(String apiLoginId, String transactionKey, String customerProfileId) {
 
         ApiOperationBase.setEnvironment(Environment.SANDBOX);
 
@@ -20,14 +18,13 @@ public class DeleteCustomerPaymentProfile {
         merchantAuthenticationType.setTransactionKey(transactionKey);
         ApiOperationBase.setMerchantAuthentication(merchantAuthenticationType);
 
-        DeleteCustomerPaymentProfileRequest apiRequest = new DeleteCustomerPaymentProfileRequest();
+        DeleteCustomerProfileRequest apiRequest = new DeleteCustomerProfileRequest();
         apiRequest.setCustomerProfileId(customerProfileId);
-        apiRequest.setCustomerPaymentProfileId(customerPaymentProfileId);
 
-        DeleteCustomerPaymentProfileController controller = new DeleteCustomerPaymentProfileController(apiRequest);
+        DeleteCustomerProfileController controller = new DeleteCustomerProfileController(apiRequest);
         controller.execute();
        
-		DeleteCustomerPaymentProfileResponse response = new DeleteCustomerPaymentProfileResponse();
+		DeleteCustomerProfileResponse response = new DeleteCustomerProfileResponse();
 		response = controller.getApiResponse();
 
 		if (response!=null) {
@@ -39,7 +36,7 @@ public class DeleteCustomerPaymentProfile {
             }
             else
             {
-                System.out.println("Failed to delete customer payment profile:  " + response.getMessages().getResultCode());
+                System.out.println("Failed to delete customer profile:  " + response.getMessages().getResultCode());
             }
         }
 		return response;

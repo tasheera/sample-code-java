@@ -1,6 +1,5 @@
-package net.authorize.sample.CustomerProfiles;
+package net.authorize.sample.customerprofiles;
 
-import java.util.ArrayList;
 import java.util.List;
 import net.authorize.Environment;
 import net.authorize.api.contract.v1.*;
